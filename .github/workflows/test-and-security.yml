@@ -2,71 +2,71 @@ name: Test and Security
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
 
 jobs:
   test-and-audit:
     name: Test and Security Check
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: |
-        npm ci
-        npm install -g vitest
-    
-    - name: Run tests with coverage
-      run: |
-        export NODE_OPTIONS=--openssl-legacy-provider
-        npm run test:coverage
-      env:
-        CI: true
-        NODE_ENV: test
-    
-    - name: Upload coverage report
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-report
-        path: coverage/
-    
-    - name: Run security audit
-      run: npm audit --audit-level=moderate
-      continue-on-error: true  # Don't fail the workflow for audit warnings
-    
-    - name: Generate test report
-      run: |
-        mkdir -p test-reports
-        echo "# Test and Security Report" > test-reports/report.md
-        echo "## Test Coverage" >> test-reports/report.md
-        if [ -f "coverage/lcov-report/index.html" ]; then
-          echo "✅ Test coverage report generated successfully" >> test-reports/report.md
-        else
-          echo "❌ Test coverage report not generated" >> test-reports/report.md
-        fi
-        echo "## Security Audit" >> test-reports/report.md
-        npm audit --json > test-reports/audit-report.json || true
-        echo "Security audit completed. See the logs for details." >> test-reports/report.md
-    
-    - name: Upload test report
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-report
-        path: test-reports/report.md
-    
-    - name: Upload security report
-      uses: actions/upload-artifact@v4
-      with:
-        name: security-report
-        path: test-reports/audit-report.json
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm install -g vitest
+
+      - name: Run tests with coverage
+        run: |
+          export NODE_OPTIONS=--openssl-legacy-provider
+          npm run test:coverage
+        env:
+          CI: true
+          NODE_ENV: test
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+
+      - name: Run security audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true # Don't fail the workflow for audit warnings
+
+      - name: Generate test report
+        run: |
+          mkdir -p test-reports
+          echo "# Test and Security Report" > test-reports/report.md
+          echo "## Test Coverage" >> test-reports/report.md
+          if [ -f "coverage/lcov-report/index.html" ]; then
+            echo "✅ Test coverage report generated successfully" >> test-reports/report.md
+          else
+            echo "❌ Test coverage report not generated" >> test-reports/report.md
+          fi
+          echo "## Security Audit" >> test-reports/report.md
+          npm audit --json > test-reports/audit-report.json || true
+          echo "Security audit completed. See the logs for details." >> test-reports/report.md
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: test-reports/report.md
+
+      - name: Upload security report
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-report
+          path: test-reports/audit-report.json
