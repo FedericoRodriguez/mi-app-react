@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import Card from '../components/ui/Card'
 import UserList from '../components/features/UserList'
 import { SelectedUserProvider } from '../contexts/SelectedUserContext'
+import { setNewUser } from '../services/userService'
 
 const Home = () => {
   const [count, setCount] = useState(0)
@@ -45,6 +46,15 @@ const Home = () => {
   const manejarCambio = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNombre(e.target.value)
   }
+  const [refreshUsers, setRefreshUsers] = useState(false)
+
+  const postUser = async () => {
+    const newUser = await setNewUser(nombre)
+    const name = newUser.email
+    setNombre(name)
+    setRefreshUsers((prev) => !prev) // Toggle to trigger refresh
+  }
+
   return (
     <>
       <SelectedUserProvider>
@@ -64,13 +74,14 @@ const Home = () => {
             />
 
             <p>Hola, {nombre || 'desconocido'} 👋</p>
+            <button onClick={postUser}>Yes</button>
             <button onClick={incrementar}>Sumar +1</button>
           </Card>
           <Card
             title='Mira la Lista que me arme'
             description='Una enorme lista de usuarios'
           >
-            <UserList />
+            <UserList refresh={refreshUsers} />
           </Card>
         </div>
       </SelectedUserProvider>
