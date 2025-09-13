@@ -20,7 +20,7 @@ const Card: React.FC<CardProps> = ({
 }) => {
   return (
     <motion.div
-      className={`relative bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-200 ${
+      className={`card relative bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-200 ${
         hoverEffect ? 'hover:shadow-md hover:-translate-y-0.5' : ''
       } ${className}`}
       whileHover={hoverEffect ? { y: -2 } : {}}
@@ -31,9 +31,9 @@ const Card: React.FC<CardProps> = ({
       {(title || description) && (
         <div className="px-6 pt-6 pb-2">
           {title && (
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               {title}
-            </h3>
+            </h2>
           )}
           {description && (
             <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
