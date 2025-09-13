@@ -6,7 +6,12 @@ import { useSelectedUser } from '../../contexts/SelectedUserContext'
 import { User } from '../../types'
 import { getUsers, searchUsers, ApiError } from '../../services'
 
-const UserList: React.FC = () => {
+// Add props type for refresh
+type UserListProps = {
+  refresh: boolean
+}
+
+const UserList: React.FC<UserListProps> = ({ refresh }) => {
   const [users, setUsers] = useState<User[]>([])
   const [filteredUsers, setFilteredUsers] = useState<User[]>([])
   const [search, setSearch] = useState('')
@@ -37,7 +42,7 @@ const UserList: React.FC = () => {
     }
 
     fetchUsers()
-  }, [])
+  }, [refresh])
 
   useEffect(() => {
     // Use the searchUsers utility from userService
