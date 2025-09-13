@@ -1,17 +1,23 @@
 import { Routes, Route } from 'react-router-dom'
-import Layout from './components/layout/Layout'
+import Layout from './components/Layout'
 import Home from './pages/Home'
 import UserDetail from './pages/UserDetail'
-import './App.css'
+import SearchResults from './pages/SearchResults'
+import NotFound from './pages/NotFound'
+import './index.css'
 
 function App() {
   return (
-    <Routes>
-      <Route path='/' element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path='usuario/:id' element={<UserDetail />} />
-      </Route>
-    </Routes>
+    <div className='min-h-screen flex flex-col'>
+      <Routes>
+        <Route path='/' element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path='usuario/:id' element={<UserDetail />} />
+          <Route path='search' element={<SearchResults />} />
+          <Route path='*' element={<NotFound />} />
+        </Route>
+      </Routes>
+    </div>
   )
 }
 
