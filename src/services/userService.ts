@@ -66,7 +66,7 @@ export async function setNewUser(userName: string): Promise<User> {
 
     const user = {
         name: userName,
-        email: `${userName.toLowerCase()}@example.com`,
+        email: `${userName.toLowerCase()}@example.com +`,
     }
 
 
